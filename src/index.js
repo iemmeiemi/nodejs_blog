@@ -4,11 +4,18 @@ const path = require('path')
 const morgan = require('morgan')
 const app = express()
 const port = 3000
+const route = require('./routes');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.urlencoded({
+  extended: true
+}))
+
+app.use(express.json());
+
 //http logger
-app.use(morgan('combined'))
+//app.use(morgan('combined'))
 
 //template engine
 app.engine('hbs', handlebars.engine({
@@ -17,9 +24,9 @@ app.engine('hbs', handlebars.engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views'));
 
-app.get('/', (req, res) => {
-  res.render('home');
-})
+
+//route
+route(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port: http://localhost:${port}`)
